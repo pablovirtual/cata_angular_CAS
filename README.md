@@ -57,3 +57,22 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Documentación del Proyecto
+
+Este proyecto incluye documentación detallada para facilitar su comprensión y mantenimiento:
+
+- [`DOCUMENTATION.md`](./DOCUMENTATION.md): Documentación general del proyecto, estructura y funcionamiento.
+- [`src/app/components/home/home.component.md`](./src/app/components/home/home.component.md): Documentación del componente Home.
+- [`src/app/movie/movie.component.md`](./src/app/movie/movie.component.md): Documentación del componente Movie.
+- [`src/app/services/movie.service.md`](./src/app/services/movie.service.md): Documentación del servicio MovieService.
+- [`src/app/models/movie.model.md`](./src/app/models/movie.model.md): Documentación del modelo de datos Movie.
+
+La documentación incluye descripciones detalladas de componentes, servicios, modelos de datos, flujos de trabajo y ejemplos de uso.
+
+## Información del Desarrollador
+
+- **Nombre:** Pedro Pablo Rodriguez Gomez
+- **ID:** 227371502
+- **Universidad:** Universidad de Guadalajara
+- **Curso:** Conceptualización de entornos de desarrollo de aplicaciones y servicios
