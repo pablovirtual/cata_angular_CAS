@@ -1,0 +1,52 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <a routerLink="/" class="btn btn-primary me-3">
+        <i class="bi bi-house-fill"></i> Ir a Inicio
+      </a>
+      <h1 class="d-inline-block">Catálogo de Películas</h1>
+    </div>
+    <button class="btn btn-success">Agregar Película</button>
+  </div>
+
+  <!-- Mensaje de carga -->
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-2">Cargando películas...</p>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+
+  <!-- Mensaje si no hay películas -->
+  <div *ngIf="!loading && (!movies || movies.length === 0)" class="alert alert-info" role="alert">
+    No hay películas disponibles.
+  </div>
+  
+  <!-- Lista de películas -->
+  <div *ngIf="!loading && movies && movies.length > 0" class="row">
+    <div *ngFor="let movie of movies" class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body" (click)="navigateToDetail(movie.id || 0)" style="cursor: pointer;">
+          <img *ngIf="movie && movie.cover" [src]="movie.cover" class="card-img-top movie-cover" alt="{{ movie?.title }}">
+          <div *ngIf="movie && !movie.cover" class="card-img-top movie-cover-placeholder">
+            <span>No image</span>
+          </div>
+          <h5 class="card-title">{{ movie?.title }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{ movie?.year }}</h6>
+          <p class="card-text">{{ movie?.synopsis }}</p>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted">ID: {{ movie?.id }}</small>
+            <button class="btn btn-sm btn-primary" (click)="navigateToDetail(movie.id || 0)">Ver detalles</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<div class="container mt-4">
+  <!-- Mensaje de carga -->
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-2">Cargando detalles de la película...</p>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ error }}
+    <button class="btn btn-outline-primary ms-3" (click)="goBack()">Volver al catálogo</button>
+  </div>
+
+  <!-- Información de depuración -->
+  <div *ngIf="!loading && movie && debugInfo" class="alert alert-info mb-4">
+    <h5>Información de depuración:</h5>
+    <pre>{{ movie | json }}</pre>
+  </div>
+
+  <!-- Detalles de la película -->
+  <div *ngIf="!loading && !error && movie" class="card border-primary">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h2 class="mb-0">{{ movie.title || 'Sin título' }}</h2>
+      <button class="btn btn-outline-light" (click)="goBack()">Volver al catálogo</button>
+    </div>
+    
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img *ngIf="movie.cover" [src]="movie.cover" class="img-fluid rounded-start" alt="{{ movie.title }}">
+        <div *ngIf="!movie.cover" class="bg-light d-flex align-items-center justify-content-center" style="height: 400px;">
+          <span class="text-muted">Sin imagen disponible</span>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h3 class="card-title">Detalles</h3>
+          <p class="card-text"><strong>ID:</strong> {{ movie.id || 'No disponible' }}</p>
+          <p class="card-text"><strong>Título:</strong> {{ movie.title || 'No disponible' }}</p>
+          <p class="card-text"><strong>Año:</strong> {{ movie.year || 'No disponible' }}</p>
+          <p class="card-text"><strong>Sinopsis:</strong></p>
+          <p class="card-text">{{ movie.synopsis || 'No disponible' }}</p>
+          
+          <hr>
+          <div class="d-flex gap-2">
+            <button class="btn btn-warning">Editar</button>
+            <button class="btn btn-danger">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

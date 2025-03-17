@@ -1,0 +1,10 @@
+/* Estilos adicionales (mínimos ya que usamos Bootstrap) */
+.bg-image {
+  position: relative;
+}
+
+.mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
