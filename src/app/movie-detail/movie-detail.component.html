@@ -47,7 +47,13 @@
             <a [routerLink]="['/movies/edit', movie.id]" class="btn btn-warning">
               <i class="bi bi-pencil"></i> Editar
             </a>
-            <button class="btn btn-danger">Eliminar</button>
+            <button class="btn btn-danger" (click)="deleteMovie()" [disabled]="deleting">
+              <span *ngIf="!deleting"><i class="bi bi-trash"></i> Eliminar</span>
+              <span *ngIf="deleting">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Eliminando...
+              </span>
+            </button>
           </div>
         </div>
       </div>

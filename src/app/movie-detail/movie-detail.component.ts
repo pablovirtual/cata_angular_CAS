@@ -36,6 +36,9 @@ export class MovieDetailComponent implements OnInit {
   /** Controla la visualización de información de depuración en la UI */
   debugInfo: boolean = false; // Desactivada la información de depuración
 
+  /** Indica si la eliminación está en proceso */
+  deleting: boolean = false;
+
   /**
    * Constructor del componente
    * @param route Servicio para acceder a los parámetros de la ruta
@@ -106,5 +109,36 @@ export class MovieDetailComponent implements OnInit {
    */
   goBack(): void {
     this.router.navigate(['/movies']);
+  }
+
+  /**
+   * Elimina la película actual después de solicitar confirmación
+   * Se activa cuando el usuario hace clic en el botón "Eliminar"
+   */
+  deleteMovie(): void {
+    if (!this.movie || !this.movie.id) {
+      this.error = 'No se puede eliminar: ID de película no disponible';
+      return;
+    }
+
+    // Solicitar confirmación al usuario
+    if (!confirm(`¿Estás seguro de que deseas eliminar la película "${this.movie.title}"? Esta acción no se puede deshacer.`)) {
+      return; // El usuario canceló la operación
+    }
+
+    this.deleting = true;
+    this.movieService.deleteMovie(this.movie.id).subscribe({
+      next: () => {
+        console.log('Película eliminada correctamente');
+        this.deleting = false;
+        // Redirigir al usuario al catálogo de películas
+        this.router.navigate(['/movies']);
+      },
+      error: (err) => {
+        console.error('Error al eliminar la película:', err);
+        this.error = 'Error al eliminar la película: ' + err.message;
+        this.deleting = false;
+      }
+    });
   }
 }
