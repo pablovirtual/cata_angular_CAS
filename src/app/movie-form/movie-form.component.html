@@ -1,58 +1,130 @@
+<!--
+  MODIFICACIONES (23/03/2025):
+  - Se agregó el componente de navegación reutilizable en la parte superior
+  - Se mejoró la estructura del formulario con validación más sofisticada
+  - Se agregaron mensajes de error específicos para cada campo
+  - Se implementaron indicadores visuales durante la carga y envío
+  - Se agregaron mensajes de retroalimentación (éxito/error)
+-->
+
+<!-- Componente de navegación reutilizable -->
+<app-navbar></app-navbar>
+
 <div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <a routerLink="/movies" class="btn btn-primary me-3">
-        <i class="bi bi-arrow-left"></i> Volver al catálogo
-      </a>
-      <h1 class="d-inline-block">{{ isEditMode ? 'Editar' : 'Agregar Nueva' }} Película</h1>
+  <div class="card border-primary">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">{{ isEditMode ? 'Editar Película' : 'Agregar Nueva Película' }}</h2>
+    </div>
+    <div class="card-body">
+      <!-- Mensaje de carga -->
+      <div *ngIf="loading" class="text-center my-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="mt-2">Cargando datos de la película...</p>
+      </div>
+
+      <!-- Mensaje de error global -->
+      <div *ngIf="error" class="alert alert-danger mb-4">
+        {{ error }}
+      </div>
+
+      <!-- Mensaje de éxito -->
+      <div *ngIf="successMessage" class="alert alert-success mb-4">
+        {{ successMessage }}
+      </div>
+
+      <!-- Formulario de película -->
+      <form [formGroup]="movieForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+        <!-- Campo Título -->
+        <div class="mb-3">
+          <label for="title" class="form-label">Título</label>
+          <input 
+            type="text" 
+            class="form-control"
+            [ngClass]="{'is-invalid': hasError('title')}"
+            id="title" 
+            formControlName="title" 
+            placeholder="Ej: El Padrino">
+          <div *ngIf="hasError('title')" class="invalid-feedback">
+            {{ getErrorMessage('title') }}
+          </div>
+        </div>
+
+        <!-- Campo Año -->
+        <div class="mb-3">
+          <label for="year" class="form-label">Año</label>
+          <input 
+            type="number" 
+            class="form-control"
+            [ngClass]="{'is-invalid': hasError('year')}"
+            id="year" 
+            formControlName="year" 
+            placeholder="Ej: 1972">
+          <div *ngIf="hasError('year')" class="invalid-feedback">
+            {{ getErrorMessage('year') }}
+          </div>
+        </div>
+
+        <!-- Campo Sinopsis -->
+        <div class="mb-3">
+          <label for="synopsis" class="form-label">Sinopsis</label>
+          <textarea 
+            class="form-control"
+            [ngClass]="{'is-invalid': hasError('synopsis')}"
+            id="synopsis" 
+            formControlName="synopsis" 
+            rows="4" 
+            placeholder="Breve descripción de la película..."></textarea>
+          <div *ngIf="hasError('synopsis')" class="invalid-feedback">
+            {{ getErrorMessage('synopsis') }}
+          </div>
+        </div>
+
+        <!-- Campo URL Portada -->
+        <div class="mb-3">
+          <label for="cover" class="form-label">URL de la Imagen de Portada</label>
+          <input 
+            type="text" 
+            class="form-control"
+            [ngClass]="{'is-invalid': hasError('cover')}"
+            id="cover" 
+            formControlName="cover" 
+            placeholder="Ej: https://ejemplo.com/imagen.jpg">
+          <div *ngIf="hasError('cover')" class="invalid-feedback">
+            {{ getErrorMessage('cover') }}
+          </div>
+          <small class="form-text text-muted">Ingresa una URL completa a una imagen online.</small>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="d-flex gap-2 mt-4">
+          <button 
+            type="submit" 
+            class="btn btn-primary" 
+            [disabled]="movieForm.invalid || submitting">
+            <span *ngIf="!submitting">{{ isEditMode ? 'Guardar Cambios' : 'Crear Película' }}</span>
+            <span *ngIf="submitting">
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              {{ isEditMode ? 'Guardando...' : 'Creando...' }}
+            </span>
+          </button>
+          <button 
+            type="button" 
+            class="btn btn-outline-secondary" 
+            (click)="cancel()" 
+            [disabled]="submitting">
+            Cancelar
+          </button>
+        </div>
+      </form>
     </div>
   </div>
-  
-  <!-- Mensaje de carga -->
-  <div *ngIf="loading" class="text-center my-5">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">{{ isEditMode ? 'Actualizando...' : 'Guardando...' }}</span>
-    </div>
-    <p class="mt-2">{{ isEditMode ? 'Actualizando' : 'Guardando' }} película...</p>
+
+  <!-- Botón para volver al catálogo -->
+  <div class="mt-3">
+    <a [routerLink]="['/movies']" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left"></i> Volver al Catálogo
+    </a>
   </div>
-  
-  <!-- Mensaje de error -->
-  <div *ngIf="error" class="alert alert-danger" role="alert">
-    {{ error }}
-  </div>
-  
-  <!-- Formulario -->
-  <form (ngSubmit)="saveMovie()" *ngIf="!loading || (isEditMode && movie.id)">
-    <div class="mb-3">
-      <label for="title" class="form-label">Título</label>
-      <input type="text" class="form-control" id="title" name="title" 
-             [(ngModel)]="movie.title" required>
-    </div>
-    
-    <div class="mb-3">
-      <label for="year" class="form-label">Año</label>
-      <input type="number" class="form-control" id="year" name="year" 
-             [(ngModel)]="movie.year" required>
-    </div>
-    
-    <div class="mb-3">
-      <label for="cover" class="form-label">URL de Portada</label>
-      <input type="url" class="form-control" id="cover" name="cover" 
-             [(ngModel)]="movie.cover" required>
-      <div class="form-text">Ingrese una URL válida para la imagen de portada.</div>
-    </div>
-    
-    <div class="mb-3">
-      <label for="synopsis" class="form-label">Sinopsis</label>
-      <textarea class="form-control" id="synopsis" name="synopsis" rows="4" 
-                [(ngModel)]="movie.synopsis" required></textarea>
-    </div>
-    
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-      <a routerLink="/movies" class="btn btn-secondary me-md-2">Cancelar</a>
-      <button type="submit" class="btn btn-success" [disabled]="!movie.title || !movie.synopsis || !movie.year || !movie.cover">
-        {{ isEditMode ? 'Actualizar' : 'Guardar' }} Película
-      </button>
-    </div>
-  </form>
 </div>

@@ -1,10 +1,15 @@
 <!--
   MODIFICACIONES (23/03/2025):
+  - Se agregó el componente de navegación reutilizable en la parte superior
   - Se mejoró el botón "Editar" para usar RouterLink en lugar de ser un simple botón
   - Se conectó el botón "Eliminar" con el método deleteMovie() del componente
   - Se agregó indicador visual (spinner) durante el proceso de eliminación
   - Se implementó manejo de estados (disabled) durante operaciones para prevenir doble clic
 -->
+
+<!-- Componente de navegación reutilizable -->
+<app-navbar></app-navbar>
+
 <div class="container mt-4">
   <!-- Mensaje de carga -->
   <div *ngIf="loading" class="text-center my-5">

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MovieService } from '../services/movie.service';
 import { Movie } from '../models/movie';
+import { NavbarComponent } from '../shared/navbar/navbar.component';
 
 /**
  * @description Componente para mostrar los detalles de una película específica
@@ -18,6 +19,7 @@ import { Movie } from '../models/movie';
  * - Se agregó la propiedad 'deleting' para controlar el estado durante la eliminación
  * - Se implementó el método deleteMovie() para eliminar películas con confirmación de usuario
  * - Se mejoró el manejo de errores y feedback visual durante operaciones
+ * - Se importó NavbarComponent para incluir la barra de navegación común en toda la aplicación
  * 
  * @usageNotes
  * Este componente se activa cuando el usuario navega a la ruta '/movies/:id'
@@ -25,7 +27,7 @@ import { Movie } from '../models/movie';
 @Component({
   selector: 'app-movie-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, NavbarComponent],
   templateUrl: './movie-detail.component.html',
   styleUrls: ['./movie-detail.component.css']
 })

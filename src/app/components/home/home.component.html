@@ -1,4 +1,7 @@
 <div class="container-fluid p-0">
+  <!-- Uso del componente de navegación reutilizable -->
+  <app-navbar></app-navbar>
+
   <!-- Header -->
   <header class="bg-dark text-white py-4">
     <div class="container">
@@ -32,9 +35,6 @@
                 Nuestra plataforma te permite navegar fácilmente por diferentes 
                 géneros, años y directores.
               </p>
-              <div class="d-flex justify-content-center gap-3">
-                <a [routerLink]="['/movies']" class="btn btn-primary btn-lg">Ver Catálogo</a>
-              </div>
             </div>
           </div>
         </div>
