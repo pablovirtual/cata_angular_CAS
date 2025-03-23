@@ -4,16 +4,16 @@
       <a routerLink="/movies" class="btn btn-primary me-3">
         <i class="bi bi-arrow-left"></i> Volver al catálogo
       </a>
-      <h1 class="d-inline-block">Agregar Nueva Película</h1>
+      <h1 class="d-inline-block">{{ isEditMode ? 'Editar' : 'Agregar Nueva' }} Película</h1>
     </div>
   </div>
   
   <!-- Mensaje de carga -->
   <div *ngIf="loading" class="text-center my-5">
     <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Guardando...</span>
+      <span class="visually-hidden">{{ isEditMode ? 'Actualizando...' : 'Guardando...' }}</span>
     </div>
-    <p class="mt-2">Guardando película...</p>
+    <p class="mt-2">{{ isEditMode ? 'Actualizando' : 'Guardando' }} película...</p>
   </div>
   
   <!-- Mensaje de error -->
@@ -22,7 +22,7 @@
   </div>
   
   <!-- Formulario -->
-  <form (ngSubmit)="saveMovie()" *ngIf="!loading">
+  <form (ngSubmit)="saveMovie()" *ngIf="!loading || (isEditMode && movie.id)">
     <div class="mb-3">
       <label for="title" class="form-label">Título</label>
       <input type="text" class="form-control" id="title" name="title" 
@@ -51,7 +51,7 @@
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
       <a routerLink="/movies" class="btn btn-secondary me-md-2">Cancelar</a>
       <button type="submit" class="btn btn-success" [disabled]="!movie.title || !movie.synopsis || !movie.year || !movie.cover">
-        Guardar Película
+        {{ isEditMode ? 'Actualizar' : 'Guardar' }} Película
       </button>
     </div>
   </form>
