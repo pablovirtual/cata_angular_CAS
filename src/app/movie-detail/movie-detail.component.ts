@@ -13,6 +13,12 @@ import { Movie } from '../models/movie';
  * - Mostrar la información detallada de la película
  * - Proporcionar navegación de regreso al catálogo
  * 
+ * MODIFICACIONES (23/03/2025):
+ * - Se importó RouterLink para habilitar la navegación mediante directivas en la plantilla
+ * - Se agregó la propiedad 'deleting' para controlar el estado durante la eliminación
+ * - Se implementó el método deleteMovie() para eliminar películas con confirmación de usuario
+ * - Se mejoró el manejo de errores y feedback visual durante operaciones
+ * 
  * @usageNotes
  * Este componente se activa cuando el usuario navega a la ruta '/movies/:id'
  */
@@ -114,6 +120,10 @@ export class MovieDetailComponent implements OnInit {
   /**
    * Elimina la película actual después de solicitar confirmación
    * Se activa cuando el usuario hace clic en el botón "Eliminar"
+   * 
+   * MODIFICACIÓN (23/03/2025):
+   * - Método implementado para proporcionar la funcionalidad de eliminación
+   * - Incluye confirmación del usuario y manejo de estados durante la operación
    */
   deleteMovie(): void {
     if (!this.movie || !this.movie.id) {

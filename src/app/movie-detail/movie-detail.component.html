@@ -1,3 +1,10 @@
+<!--
+  MODIFICACIONES (23/03/2025):
+  - Se mejoró el botón "Editar" para usar RouterLink en lugar de ser un simple botón
+  - Se conectó el botón "Eliminar" con el método deleteMovie() del componente
+  - Se agregó indicador visual (spinner) durante el proceso de eliminación
+  - Se implementó manejo de estados (disabled) durante operaciones para prevenir doble clic
+-->
 <div class="container mt-4">
   <!-- Mensaje de carga -->
   <div *ngIf="loading" class="text-center my-5">
@@ -43,6 +50,7 @@
           <p class="card-text">{{ movie.synopsis || 'No disponible' }}</p>
           
           <hr>
+          <!-- Botones de acción mejorados con mejor UX -->
           <div class="d-flex gap-2">
             <a [routerLink]="['/movies/edit', movie.id]" class="btn btn-warning">
               <i class="bi bi-pencil"></i> Editar
