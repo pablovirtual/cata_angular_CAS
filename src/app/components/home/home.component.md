@@ -44,6 +44,11 @@ export class HomeComponent {
 }
 ```
 
+## Dependencias
+| Dependencia | Descripción |
+|-------------|-------------|
+| `NavbarComponent` | Componente de navegación reutilizable que proporciona una barra de navegación consistente |
+
 ## Utilización
 
 Este componente se utiliza como página de inicio de la aplicación y proporciona navegación al catálogo principal de películas.
@@ -52,6 +57,10 @@ Este componente se utiliza como página de inicio de la aplicación y proporcion
 
 El template asociado a este componente (`home.component.html`) debe incluir:
 
-1. Sección de encabezado con logo
-2. Área principal con imagen de fondo
-3. Footer con la información del estudiante y año de copyright
+1. **Barra de navegación** (implementada utilizando el componente `app-navbar`)
+2. Sección de encabezado con logo
+3. Área principal con imagen de fondo
+4. Footer con la información del estudiante y año de copyright
+
+## Historial de Cambios
+- **23/03/2025**: Se implementó el componente de navegación reutilizable (NavbarComponent) para proporcionar una experiencia de navegación consistente en toda la aplicación.

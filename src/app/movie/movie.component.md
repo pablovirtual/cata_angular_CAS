@@ -24,6 +24,11 @@ Componente principal para mostrar el catálogo completo de películas. Gestiona 
 - **MovieService**: Proporciona métodos para interactuar con la API de películas
 - **Router**: Facilita la navegación entre componentes
 
+## Otras Dependencias
+| Dependencia | Descripción |
+|-------------|-------------|
+| `NavbarComponent` | Componente de navegación reutilizable que proporciona una barra de navegación consistente |
+
 ## Implementación
 
 ```typescript
@@ -83,7 +88,12 @@ export class MovieComponent implements OnInit {
 
 El template asociado a este componente (`movie.component.html`) debe mostrar:
 
-1. Un indicador de carga mientras `loading` es `true`
-2. Un mensaje de error si `error` no está vacío
-3. Una lista de tarjetas para cada película en `movies`
-4. Cada tarjeta debe tener un evento de clic para llamar a `navigateToDetail(movie.id)`
+1. **Barra de navegación** usando el componente `<app-navbar>`
+2. Un indicador de carga mientras `loading` es `true`
+3. Un mensaje de error si `error` no está vacío
+4. Una lista de tarjetas para cada película en `movies`
+5. Cada tarjeta debe tener un evento de clic para llamar a `navigateToDetail(movie.id)`
+
+## Historial de Cambios
+
+- **23/03/2025**: Se implementó el componente de navegación reutilizable (NavbarComponent) para proporcionar una experiencia de navegación consistente en toda la aplicación.

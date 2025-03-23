@@ -67,8 +67,18 @@ Este proyecto incluye documentación detallada para facilitar su comprensión y 
 - [`src/app/movie/movie.component.md`](./src/app/movie/movie.component.md): Documentación del componente Movie.
 - [`src/app/services/movie.service.md`](./src/app/services/movie.service.md): Documentación del servicio MovieService.
 - [`src/app/models/movie.model.md`](./src/app/models/movie.model.md): Documentación del modelo de datos Movie.
+- [`src/app/shared/navbar/navbar.component.md`](./src/app/shared/navbar/navbar.component.md): Documentación del componente de navegación.
 
 La documentación incluye descripciones detalladas de componentes, servicios, modelos de datos, flujos de trabajo y ejemplos de uso.
+
+## Registro de Cambios
+
+### 23 de Marzo de 2025
+- **Implementación de Barra de Navegación**: Se creó un componente NavbarComponent reutilizable para proporcionar una experiencia de navegación consistente en toda la aplicación.
+- **Mejoras en UI/UX**: Se actualizaron todos los componentes principales (Home, Movie, MovieDetail, MovieForm) para usar el nuevo componente de navegación.
+- **Reestructuración**: Se reorganizó la estructura visual de las páginas para mantener un diseño coherente entre componentes.
+- **Mejoras en el Formulario**: Se mejoró el formulario de creación/edición de películas con validación reactiva más robusta y mejor feedback visual.
+- **Corrección de errores**: Se solucionaron problemas con la navegación y el manejo de errores en varios componentes.
 
 ## Información del Desarrollador
 
