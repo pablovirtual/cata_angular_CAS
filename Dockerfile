@@ -7,14 +7,16 @@ WORKDIR /app
 # Copiar archivos de configuración
 COPY package*.json ./
 
-# Instalar dependencias
-RUN npm install
+# Instalar dependencias con opciones para evitar errores
+RUN npm config set legacy-peer-deps true \
+    && npm config set fetch-retry-maxtimeout 600000 \
+    && npm install --no-audit --no-fund
 
 # Copiar código fuente
 COPY . .
 
 # Construir la aplicación
-RUN npm run build
+RUN npm run build -- --configuration=production
 
 # Etapa de producción
 FROM nginx:alpine
