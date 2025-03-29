@@ -1,11 +1,18 @@
 #!/bin/sh
-# Establecer el puerto por defecto si no está definido
-PORT=${PORT:-80}
+
+# Railway proporciona el puerto en la variable $PORT
+# Este es el puerto en el que DEBE escuchar la aplicación
+if [ -z "$PORT" ]; then
+  echo "Error: La variable PORT no está definida. Railway requiere que la aplicación escuche en el puerto especificado por esta variable."
+  exit 1
+fi
+
 echo "Configurando NGINX para escuchar en el puerto: $PORT"
 
-# Crear una configuración de nginx que escuche en el puerto correcto
+# Crear una configuración de nginx específica para Railway
 cat > /etc/nginx/conf.d/default.conf << EOF
 server {
+    # Es CRUCIAL escuchar en el puerto proporcionado por Railway
     listen $PORT default_server;
     server_name _;
     
@@ -30,7 +37,8 @@ server {
 }
 EOF
 
-echo "Configuración de NGINX completada. Iniciando servidor..."
+echo "Configuración de NGINX completada para Railway. NGINX escuchará en el puerto $PORT."
+echo "Iniciando servidor NGINX..."
 
-# Iniciar nginx en primer plano
+# Iniciar NGINX en primer plano
 exec nginx -g 'daemon off;'
