@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 /**
  * Componente de barra de navegación reutilizable
@@ -14,16 +14,25 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  // Variable para controlar la visibilidad del menú
-  isMenuCollapsed = true;
+  // Variable para controlar si el menú está abierto o cerrado
+  isMenuOpen = false;
   
-  // Método para alternar la visibilidad del menú
-  toggleMenu() {
-    this.isMenuCollapsed = !this.isMenuCollapsed;
+  /**
+   * Activa o desactiva la visibilidad del menú
+   */
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+  
+  /**
+   * Cierra el menú si está abierto
+   */
+  closeMenu(): void {
+    this.isMenuOpen = false;
   }
 }

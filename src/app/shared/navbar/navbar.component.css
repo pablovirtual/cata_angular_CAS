@@ -3,9 +3,31 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Estilo para el botón de menú hamburguesa */
+.navbar-toggler:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Estilos para manejo manual de menú responsive */
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    display: none;
+    overflow-y: auto;
+    max-height: 80vh;
+  }
+  
+  .navbar-collapse.menu-open {
+    display: block;
+  }
+}
+
 .nav-link.active {
   font-weight: bold;
   position: relative;
+  color: #fff !important;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
 }
 
 .nav-link.active::after {

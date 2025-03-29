@@ -80,6 +80,145 @@ La documentación incluye descripciones detalladas de componentes, servicios, mo
 - **Mejoras en el Formulario**: Se mejoró el formulario de creación/edición de películas con validación reactiva más robusta y mejor feedback visual.
 - **Corrección de errores**: Se solucionaron problemas con la navegación y el manejo de errores en varios componentes.
 
+## Despliegue de la Aplicación
+
+### Requisitos Previos
+
+Para desplegar la aplicación necesitarás:
+
+- Cuenta en [Railway](https://railway.app/)
+- [Node.js](https://nodejs.org/) (v18 o superior)
+- [Angular CLI](https://angular.io/cli) (v19.2.0)
+- [Git](https://git-scm.com/)
+- [Docker](https://www.docker.com/) (opcional, para pruebas locales del contenedor)
+
+### Preparación para el Despliegue
+
+1. **Construir la Aplicación para Producción**
+
+   ```bash
+   npm run build
+   ```
+
+   Este comando generará la aplicación optimizada en la carpeta `dist/catalogo-peliculas/browser`.
+
+2. **Verificación de Archivos Estáticos**
+
+   Asegúrate de que todos los archivos estáticos necesarios (imágenes, fuentes, etc.) estén correctamente incluidos en la carpeta `assets`:
+
+   ```bash
+   # Estructura correcta de assets
+   dist/catalogo-peliculas/browser/assets/
+   ├── images/
+   │   ├── logo.jpg
+   │   ├── fondo.jpg
+   │   └── ...
+   └── ...
+   ```
+
+3. **Archivo `start.sh`**
+
+   Crea un archivo `start.sh` en la raíz de tu proyecto:
+
+   ```bash
+   #!/bin/sh
+   # Reemplazar la variable de entorno PORT en la configuración de nginx
+   envsubst '${PORT}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
+   # Iniciar nginx
+   nginx -g 'daemon off;'
+   ```
+
+4. **Configuración de Nginx (opcional)**
+
+   Si necesitas personalizar la configuración de Nginx, crea un archivo `default.conf.template`:
+
+   ```nginx
+   server {
+       listen ${PORT};
+       
+       location / {
+           root /usr/share/nginx/html;
+           index index.html index.htm;
+           try_files $uri $uri/ /index.html;
+       }
+   }
+   ```
+
+### Archivo Dockerfile
+
+El proyecto incluye un `Dockerfile` para containerizar la aplicación:
+
+```dockerfile
+# Etapa de producción
+FROM nginx:alpine
+
+# Copiar el script de inicio
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Copiar la aplicación compilada previamente
+COPY dist/catalogo-peliculas/browser /usr/share/nginx/html
+
+# Exponer puerto (esto es informativo, el puerto real lo determina Railway)
+EXPOSE 8080
+
+# Ejecutar el script de inicio
+CMD ["/start.sh"]
+```
+
+### Despliegue en Railway
+
+1. **Inicializar Repositorio Git** (si no lo has hecho ya)
+
+   ```bash
+   git init
+   git add .
+   git commit -m "Preparación para despliegue en Railway"
+   ```
+
+2. **Crear un Nuevo Proyecto en Railway**
+
+   - Accede a [Railway](https://railway.app/) y crea una cuenta o inicia sesión
+   - Crea un nuevo proyecto seleccionando "Deploy from GitHub repo"
+   - Conecta tu repositorio de GitHub
+   - Selecciona el repositorio que contiene tu aplicación
+
+3. **Configuración del Despliegue**
+
+   - Railway detectará automáticamente el `Dockerfile`
+   - Asegúrate de que la variable de entorno `PORT` esté configurada (Railway la establece por defecto)
+   - Opcional: Configura un dominio personalizado en la sección "Settings"
+
+4. **Verificar el Despliegue**
+
+   - Railway desplegará automáticamente tu aplicación
+   - Puedes ver los logs del despliegue en la sección "Deployments"
+   - Una vez completado, haz clic en la URL generada para acceder a tu aplicación
+
+### Solución de Problemas Comunes
+
+1. **Problema**: Imágenes no se muestran en producción
+   **Solución**: Asegúrate de que las imágenes estén en la carpeta `src/assets/images` y que las rutas en el código estén correctas (usando `assets/images/nombre-archivo.jpg`).
+
+2. **Problema**: El menú responsive no funciona
+   **Solución**: Verifica la implementación del componente `NavbarComponent` y asegúrate de que esté utilizando las clases CSS correctas. Consulta la sección de CSS personalizado en `navbar.component.css`.
+
+3. **Problema**: Error 404 al navegar directamente a una ruta
+   **Solución**: Asegúrate de que la configuración de Nginx incluya la redirección para SPA: `try_files $uri $uri/ /index.html;`.
+
+4. **Problema**: Fallos al compilar en Railway
+   **Solución**: Verifica los logs de despliegue y asegúrate de que todos los comandos en el `Dockerfile` se ejecuten correctamente. Puede ser necesario ajustar permisos o dependencias.
+
+### Actualizaciones y Mantenimiento
+
+Para actualizar la aplicación desplegada:
+
+1. Realiza cambios en tu código
+2. Compila la aplicación: `npm run build`
+3. Haz commit de los cambios: `git add . && git commit -m "Descripción de cambios"`
+4. Sube los cambios: `git push`
+5. Railway detectará automáticamente los cambios y desplegará la nueva versión
+
 ## Información del Desarrollador
 
 - **Nombre:** Pedro Pablo Rodriguez Gomez

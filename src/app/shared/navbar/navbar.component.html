@@ -5,17 +5,17 @@
       <img src="assets/images/logo.jpg" alt="Logo" height="30" class="d-inline-block align-text-top me-2">
       Catálogo de Películas
     </a>
-    <button class="navbar-toggler" type="button" (click)="toggleMenu()" 
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" (click)="toggleMenu()">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" [ngClass]="{'show': !isMenuCollapsed}" id="navbarNav">
+    <!-- Nota: cambiamos las clases para usar nuestro propio sistema -->
+    <div class="navbar-collapse" [ngClass]="{'menu-open': isMenuOpen}">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/movies']" routerLinkActive="active" (click)="isMenuCollapsed = true">Ver Catálogo</a>
+          <a class="nav-link" [routerLink]="['/movies']" routerLinkActive="active" (click)="closeMenu()">Ver Catálogo</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/movies/new']" routerLinkActive="active" (click)="isMenuCollapsed = true">Agregar Película</a>
+          <a class="nav-link" [routerLink]="['/movies/new']" routerLinkActive="active" (click)="closeMenu()">Agregar Película</a>
         </li>
       </ul>
     </div>
