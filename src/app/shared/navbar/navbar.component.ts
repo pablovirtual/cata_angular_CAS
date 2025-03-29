@@ -19,5 +19,11 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  // Este componente no necesita lógica adicional por ahora
+  // Variable para controlar la visibilidad del menú
+  isMenuCollapsed = true;
+  
+  // Método para alternar la visibilidad del menú
+  toggleMenu() {
+    this.isMenuCollapsed = !this.isMenuCollapsed;
+  }
 }

@@ -5,17 +5,17 @@
       <img src="assets/images/logo.jpg" alt="Logo" height="30" class="d-inline-block align-text-top me-2">
       Catálogo de Películas
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+    <button class="navbar-toggler" type="button" (click)="toggleMenu()" 
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="collapse navbar-collapse" [ngClass]="{'show': !isMenuCollapsed}" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/movies']" routerLinkActive="active">Ver Catálogo</a>
+          <a class="nav-link" [routerLink]="['/movies']" routerLinkActive="active" (click)="isMenuCollapsed = true">Ver Catálogo</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/movies/new']" routerLinkActive="active">Agregar Película</a>
+          <a class="nav-link" [routerLink]="['/movies/new']" routerLinkActive="active" (click)="isMenuCollapsed = true">Agregar Película</a>
         </li>
       </ul>
     </div>
