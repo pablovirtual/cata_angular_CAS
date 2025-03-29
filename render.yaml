@@ -1,9 +1,9 @@
 services:
   # Servicio estático para el frontend de Angular
   - type: web
-    name: catalogo-peliculas
+    name: catalogo-peliculas-frontend
     runtime: static
-    buildCommand: npm ci && npm run build
+    buildCommand: npm install && npm run build
     staticPublishPath: ./dist/catalogo-peliculas
     envVars:
       - key: NODE_VERSION
