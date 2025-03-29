@@ -2,11 +2,14 @@ FROM node:18-alpine as builder
 
 WORKDIR /app
 
-# Copia solo el package.json primero para aprovechar la caché de Docker
-COPY package.json ./
+# Copia solo los archivos de configuración primero
+COPY package.json tsconfig*.json ./
 
-# Instala las dependencias ignorando los scripts y usando --legacy-peer-deps
-RUN npm install --no-package-lock --ignore-scripts --legacy-peer-deps
+# Instala TypeScript en la versión correcta primero
+RUN npm install -g typescript@5.5.2
+
+# Instala las dependencias con flags para evitar problemas
+RUN npm install --no-package-lock --legacy-peer-deps
 
 # Copia el resto del código fuente
 COPY . .
