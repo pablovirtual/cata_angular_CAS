@@ -25,9 +25,27 @@ export class MovieService {
   
   // Datos de demostración para despliegue estático
   private demoMovies: Movie[] = [
-    { id: 1, title: 'El Padrino', director: 'Francis Ford Coppola', year: 1972, poster: 'https://image.tmdb.org/t/p/w500/rPdtLWNsZmAtoZl9PK7S2wE3qiS.jpg', genre: 'Drama', synopsis: 'La historia de la familia mafiosa Corleone.' },
-    { id: 2, title: 'Pulp Fiction', director: 'Quentin Tarantino', year: 1994, poster: 'https://image.tmdb.org/t/p/w500/suaEOtk1N1sgg2QM528BOlti6xW.jpg', genre: 'Crimen', synopsis: 'Las vidas de dos mafiosos, un boxeador, la esposa de un gángster y un par de bandidos se entrelazan.' },
-    { id: 3, title: 'Interestelar', director: 'Christopher Nolan', year: 2014, poster: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg', genre: 'Ciencia ficción', synopsis: 'Un grupo de exploradores viaja a través de un agujero de gusano en busca de un nuevo hogar para la humanidad.' }
+    { 
+      id: 1, 
+      title: 'El Padrino', 
+      year: 1972, 
+      cover: 'https://image.tmdb.org/t/p/w500/rPdtLWNsZmAtoZl9PK7S2wE3qiS.jpg', 
+      synopsis: 'La historia de la familia mafiosa Corleone dirigida por Francis Ford Coppola.' 
+    },
+    { 
+      id: 2, 
+      title: 'Pulp Fiction', 
+      year: 1994, 
+      cover: 'https://image.tmdb.org/t/p/w500/suaEOtk1N1sgg2QM528BOlti6xW.jpg', 
+      synopsis: 'Las vidas de dos mafiosos, un boxeador, la esposa de un gángster y un par de bandidos se entrelazan en una historia dirigida por Quentin Tarantino.' 
+    },
+    { 
+      id: 3, 
+      title: 'Interestelar', 
+      year: 2014, 
+      cover: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg', 
+      synopsis: 'Un grupo de exploradores viaja a través de un agujero de gusano en busca de un nuevo hogar para la humanidad. Dirigida por Christopher Nolan.' 
+    }
   ];
   
   /** Opciones HTTP predeterminadas */
