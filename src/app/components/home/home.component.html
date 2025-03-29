@@ -73,6 +73,79 @@
     </div>
   </div>
 
+  <!-- Video Section -->
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-12 text-center mb-4">
+        <h2 class="display-6">Explore nuestro catálogo a través del video</h2>
+        <p class="lead">Mira nuestro video introductorio para conocer todas las funcionalidades</p>
+        
+        <!-- Botones para cambiar el tipo de video -->
+        <div class="btn-group mb-4" role="group" aria-label="Cambiar tipo de video">
+          <button type="button" class="btn" [ngClass]="{'btn-primary': videoType === 'youtube', 'btn-outline-primary': videoType !== 'youtube'}" (click)="changeVideoType('youtube')">
+            <i class="bi bi-youtube"></i> YouTube
+          </button>
+          <button type="button" class="btn" [ngClass]="{'btn-primary': videoType === 'vimeo', 'btn-outline-primary': videoType !== 'vimeo'}" (click)="changeVideoType('vimeo')">
+            <i class="bi bi-vimeo"></i> Vimeo
+          </button>
+          <button type="button" class="btn" [ngClass]="{'btn-primary': videoType === 'local', 'btn-outline-primary': videoType !== 'local'}" (click)="changeVideoType('local')">
+            <i class="bi bi-file-earmark-play"></i> Video Local
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row justify-content-center" *ngIf="videoType === 'local'">
+      <div class="col-lg-8">
+        <div class="ratio ratio-16x9 shadow rounded">
+          <!-- Opción 1: Video Local -->
+          <video controls [poster]="videoPoster">
+            <source [src]="videoSource" [type]="videoFormat">
+            Tu navegador no soporta el elemento de video.
+          </video>
+        </div>
+        <div class="mt-3 text-center">
+          <p class="text-muted">Este video muestra las principales características de nuestra plataforma</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row justify-content-center" *ngIf="videoType === 'youtube'">
+      <div class="col-lg-8">
+        <div class="ratio ratio-16x9 shadow rounded">
+          <!-- Opción 2: Video de YouTube -->
+          <iframe 
+            [src]="youtubeVideoUrl | safe" 
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="mt-3 text-center">
+          <p class="text-muted">Conoce más sobre nuestro catálogo en este video de YouTube</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row justify-content-center" *ngIf="videoType === 'vimeo'">
+      <div class="col-lg-8">
+        <div class="ratio ratio-16x9 shadow rounded">
+          <!-- Opción 3: Video de Vimeo -->
+          <iframe 
+            [src]="vimeoVideoUrl | safe" 
+            frameborder="0" 
+            allow="autoplay; fullscreen; picture-in-picture" 
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="mt-3 text-center">
+          <p class="text-muted">Explora todas las funcionalidades de nuestro catálogo</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer con la información del estudiante -->
   <footer class="bg-dark text-white py-4 mt-5">
     <div class="container">
