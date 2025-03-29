@@ -1,32 +1,38 @@
-FROM node:18-alpine as build
+FROM node:18-alpine as builder
 
 WORKDIR /app
 
-# Copia package.json y package-lock.json
-COPY package*.json ./
+# Copia solo el package.json primero para aprovechar la caché de Docker
+COPY package.json ./
 
-# Instala dependencias usando npm install en lugar de npm ci
-RUN npm install
+# Instala las dependencias ignorando los scripts y usando --legacy-peer-deps
+RUN npm install --no-package-lock --ignore-scripts --legacy-peer-deps
 
 # Copia el resto del código fuente
 COPY . .
 
-# Construye la aplicación
-RUN npm run build
+# Corrige cualquier problema de permisos y realiza la build
+RUN chmod -R 777 /app && \
+    npm run build
 
-# Etapa de producción
-FROM node:18-alpine as production
+# Configura una imagen muy ligera para servir la aplicación
+FROM nginx:alpine
 
-WORKDIR /app
+# Copia los archivos de la build
+COPY --from=builder /app/dist/catalogo-peliculas /usr/share/nginx/html
 
-# Instala serve globalmente
-RUN npm install -g serve
+# Copia una configuración personalizada de nginx
+RUN echo 'server { \
+  listen 80; \
+  location / { \
+    root /usr/share/nginx/html; \
+    index index.html; \
+    try_files $uri $uri/ /index.html; \
+  } \
+}' > /etc/nginx/conf.d/default.conf
 
-# Copia los archivos de construcción desde la etapa anterior
-COPY --from=build /app/dist/catalogo-peliculas ./dist
+# Expone el puerto 80
+EXPOSE 80
 
-# Expone el puerto que utilizará la aplicación
-EXPOSE 3000
-
-# Comando para iniciar la aplicación
-CMD ["serve", "-s", "dist", "-p", "3000"]
+# Inicia NGINX
+CMD ["nginx", "-g", "daemon off;"]
