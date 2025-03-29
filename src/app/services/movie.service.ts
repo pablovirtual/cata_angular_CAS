@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, of } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
 import { Movie } from '../models/movie';
 
@@ -17,8 +17,18 @@ import { Movie } from '../models/movie';
   providedIn: 'root'
 })
 export class MovieService {
-  /** URL base de la API */
-  private apiUrl = 'http://localhost/catalogo/public/api';
+  /** 
+   * URL base de la API 
+   * NOTA: Por ahora, utilizamos datos mockeados para la demostración
+   */
+  private apiUrl = 'http://api-placeholder/api';
+  
+  // Datos de demostración para despliegue estático
+  private demoMovies: Movie[] = [
+    { id: 1, title: 'El Padrino', director: 'Francis Ford Coppola', year: 1972, poster: 'https://image.tmdb.org/t/p/w500/rPdtLWNsZmAtoZl9PK7S2wE3qiS.jpg', genre: 'Drama', synopsis: 'La historia de la familia mafiosa Corleone.' },
+    { id: 2, title: 'Pulp Fiction', director: 'Quentin Tarantino', year: 1994, poster: 'https://image.tmdb.org/t/p/w500/suaEOtk1N1sgg2QM528BOlti6xW.jpg', genre: 'Crimen', synopsis: 'Las vidas de dos mafiosos, un boxeador, la esposa de un gángster y un par de bandidos se entrelazan.' },
+    { id: 3, title: 'Interestelar', director: 'Christopher Nolan', year: 2014, poster: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg', genre: 'Ciencia ficción', synopsis: 'Un grupo de exploradores viaja a través de un agujero de gusano en busca de un nuevo hogar para la humanidad.' }
+  ];
   
   /** Opciones HTTP predeterminadas */
   private httpOptions = {
@@ -34,85 +44,59 @@ export class MovieService {
   constructor(private http: HttpClient) { }
 
   /**
-   * Obtiene todas las películas desde la API
+   * Obtiene todas las películas (versión demo estática)
    * @returns Observable con un array de objetos Movie
    */
   getMovies(): Observable<Movie[]> {
-    console.log('Obteniendo todas las películas desde:', `${this.apiUrl}/movies`);
-    return this.http.get<any>(`${this.apiUrl}/movies`)
-      .pipe(
-        map(response => {
-          // Si la respuesta está envuelta en un objeto con una propiedad 'data'
-          if (response && response.data) {
-            return response.data;
-          }
-          // Si la respuesta es el array directamente
-          return response;
-        }),
-        tap(movies => console.log('Películas recibidas:', movies)),
-        catchError(this.handleError)
-      );
+    console.log('Usando datos de demostración estáticos (sin backend)');
+    return of(this.demoMovies);
   }
 
   /**
-   * Obtiene una película específica por su ID
+   * Obtiene una película específica por su ID (versión demo estática)
    * @param id ID de la película a obtener
    * @returns Observable con el objeto Movie correspondiente al ID
    */
   getMovie(id: number): Observable<Movie> {
-    console.log('Obteniendo película con ID:', id, 'desde:', `${this.apiUrl}/movies/${id}`);
-    return this.http.get<any>(`${this.apiUrl}/movies/${id}`)
-      .pipe(
-        map(response => {
-          // Si la respuesta está envuelta en un objeto con una propiedad 'data'
-          if (response && response.data) {
-            console.log('Película recibida dentro de data:', response.data);
-            return response.data;
-          }
-          console.log('Película recibida directamente:', response);
-          // Si la respuesta es el objeto directamente
-          return response;
-        }),
-        tap(movie => console.log('Película procesada y asignada:', movie)),
-        catchError(this.handleError)
-      );
+    console.log('Obteniendo película con ID:', id, '(datos de demostración)');
+    const movie = this.demoMovies.find(m => m.id === id);
+    
+    if (movie) {
+      return of(movie);
+    } else {
+      return throwError(() => new Error('Película no encontrada'));
+    }
   }
 
   /**
-   * Crea una nueva película en la base de datos
+   * Crea una nueva película (versión demo estática)
    * @param movie Objeto Movie con los datos de la nueva película
-   * @returns Observable con la respuesta del servidor
+   * @returns Observable con la respuesta simulada
    */
   createMovie(movie: Movie): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/movies`, movie, this.httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
+    console.log('Creando película de demostración (sin backend):', movie);
+    return of({ success: true, message: 'Película creada con éxito (simulado)' });
   }
 
   /**
-   * Actualiza una película existente
+   * Actualiza una película existente (versión demo estática)
    * @param id ID de la película a actualizar
    * @param movie Objeto Movie con los nuevos datos
-   * @returns Observable con la respuesta del servidor
+   * @returns Observable con la respuesta simulada
    */
   updateMovie(id: number, movie: Movie): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/movies/${id}`, movie, this.httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
+    console.log('Actualizando película de demostración (sin backend):', movie);
+    return of({ success: true, message: 'Película actualizada con éxito (simulado)' });
   }
 
   /**
-   * Elimina una película existente
+   * Elimina una película existente (versión demo estática)
    * @param id ID de la película a eliminar
-   * @returns Observable con la respuesta del servidor
+   * @returns Observable con la respuesta simulada
    */
   deleteMovie(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/movies/${id}`, this.httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
+    console.log('Eliminando película de demostración (sin backend) ID:', id);
+    return of({ success: true, message: 'Película eliminada con éxito (simulado)' });
   }
 
   /**
