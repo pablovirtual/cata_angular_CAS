@@ -9,6 +9,6 @@
     "restartPolicyMaxRetries": 10,
     "healthcheckPath": "/",
     "healthcheckTimeout": 300,
-    "startCommand": "npx serve -s dist/catalogo-peliculas"
+    "startCommand": "npx serve dist/catalogo-peliculas -p $PORT -s"
   }
 }

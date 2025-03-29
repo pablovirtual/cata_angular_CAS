@@ -1,1 +1,1 @@
-web: npx serve -s dist/catalogo-peliculas
+web: npx serve dist/catalogo-peliculas -p $PORT -s
