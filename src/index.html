@@ -7,9 +7,125 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  
+  <!-- Estilos directos para menú responsive -->
+  <style>
+    /* Estos estilos se aplican directamente, sin depender de la compilación de Angular */
+    @media (max-width: 991.98px) {
+      #directNavbarToggle {
+        display: block;
+        position: fixed;
+        top: 10px;
+        right: 15px;
+        z-index: 2000;
+        width: 40px;
+        height: 40px;
+        border: none;
+        background-color: #343a40;
+        border-radius: 4px;
+        cursor: pointer;
+        padding: 5px;
+      }
+      
+      #directNavbarToggle span {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background-color: white;
+        margin: 5px 0;
+        transition: 0.3s;
+      }
+      
+      #directMobileMenu {
+        display: none;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background-color: #343a40;
+        padding: 20px;
+        z-index: 1999;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      }
+      
+      #directMobileMenu.menu-open {
+        display: block;
+      }
+      
+      #directMobileMenu a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 10px 15px;
+        margin: 5px 0;
+        text-align: center;
+        border-radius: 4px;
+      }
+      
+      #directMobileMenu a:hover {
+        background-color: rgba(255,255,255,0.1);
+      }
+    }
+    
+    @media (min-width: 992px) {
+      #directNavbarToggle, #directMobileMenu {
+        display: none !important;
+      }
+    }
+  </style>
 </head>
 <body>
+  <!-- Menú móvil directo (fuera de Angular) que funcionará en producción -->
+  <button id="directNavbarToggle" aria-label="Toggle navigation">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  
+  <div id="directMobileMenu">
+    <a href="/movies">Ver Catálogo</a>
+    <a href="/movies/new">Agregar Película</a>
+  </div>
+
   <app-root></app-root>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  
+  <!-- Script para controlar el menú móvil directo -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var menuButton = document.getElementById('directNavbarToggle');
+      var mobileMenu = document.getElementById('directMobileMenu');
+      
+      if (menuButton && mobileMenu) {
+        menuButton.addEventListener('click', function() {
+          mobileMenu.classList.toggle('menu-open');
+          
+          // Animar las barras del botón hamburguesa a X
+          var bars = menuButton.querySelectorAll('span');
+          if (mobileMenu.classList.contains('menu-open')) {
+            bars[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+            bars[1].style.opacity = '0';
+            bars[2].style.transform = 'rotate(-45deg) translate(7px, -7px)';
+          } else {
+            bars[0].style.transform = 'none';
+            bars[1].style.opacity = '1';
+            bars[2].style.transform = 'none';
+          }
+        });
+        
+        // Cerrar el menú al hacer clic en un enlace
+        var links = mobileMenu.querySelectorAll('a');
+        links.forEach(function(link) {
+          link.addEventListener('click', function() {
+            mobileMenu.classList.remove('menu-open');
+            menuButton.querySelectorAll('span').forEach(function(bar) {
+              bar.style.transform = 'none';
+              bar.style.opacity = '1';
+            });
+          });
+        });
+      }
+    });
+  </script>
 </body>
 </html>
