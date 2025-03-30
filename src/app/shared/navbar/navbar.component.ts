@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -18,35 +18,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
-  
-  /**
-   * Inicializa el manejador del menú móvil después de que el componente se carga
-   */
-  ngOnInit(): void {
-    // Implementación directa con JavaScript vanilla para garantizar la compatibilidad en producción
-    setTimeout(() => {
-      const menuButton = document.getElementById('mobileMenuButton');
-      const mobileMenu = document.getElementById('mobileNavMenu');
-      
-      if (menuButton && mobileMenu) {
-        // Evento de clic para el botón que funciona en cualquier entorno
-        menuButton.addEventListener('click', () => {
-          if (mobileMenu.classList.contains('show')) {
-            mobileMenu.classList.remove('show');
-          } else {
-            mobileMenu.classList.add('show');
-          }
-        });
-        
-        // Cierra el menú cuando se hace clic en un enlace
-        const navLinks = mobileMenu.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-          link.addEventListener('click', () => {
-            mobileMenu.classList.remove('show');
-          });
-        });
-      }
-    }, 500); // Pequeño retraso para asegurar que los elementos DOM están disponibles
-  }
+export class NavbarComponent {
+  // No necesitamos ngOnInit ni manipulación DOM con JavaScript
+  // ya que ahora usamos una solución puramente CSS
 }

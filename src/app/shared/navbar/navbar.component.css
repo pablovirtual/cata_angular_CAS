@@ -1,50 +1,120 @@
-/* Estilos específicos para la barra de navegación */
-.navbar {
+/* Estilos para la barra de navegación personalizada con menú CSS puro */
+.custom-navbar {
+  background-color: #343a40;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: white;
+  padding: 0.5rem 0;
 }
 
-/* Estilo para el botón de menú hamburguesa */
-.navbar-toggler:focus {
-  outline: none;
-  box-shadow: none;
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  max-width: 1140px;
+  margin: 0 auto;
 }
 
-/* Estilos para manejo manual de menú responsive */
-@media (max-width: 991.98px) {
-  .navbar-collapse {
-    position: absolute;
-    top: 56px; /* Ajusta según la altura de tu navbar */
-    left: 0;
-    right: 0;
-    background-color: #343a40; /* Mismo color que navbar-dark bg-dark */
-    padding: 1rem;
-    z-index: 1000;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    overflow-y: auto;
-    max-height: 80vh;
-  }
-  
-  /* Por defecto el menú está oculto */
-  .collapse:not(.show) {
-    display: none;
-  }
-  
-  /* Cuando tiene la clase show, se muestra */
-  .collapse.show {
-    display: block;
-  }
+/* Estilos para el logo */
+.navbar-brand {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
 }
 
-/* Estilo para enlaces activos */
-.nav-link.active {
-  font-weight: bold;
+.navbar-brand:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.navbar-brand img {
+  margin-right: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover img {
+  transform: scale(1.1);
+}
+
+/* Hack de checkbox para menú responsive */
+.menu-checkbox {
+  display: none; /* Ocultar el checkbox */
+}
+
+/* Botón hamburguesa */
+.menu-button {
+  display: none; /* Por defecto oculto en pantallas grandes */
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
   position: relative;
-  color: #fff !important;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  z-index: 2;
 }
 
-.nav-link.active::after {
+/* Las tres barras del icono hamburguesa */
+.menu-icon,
+.menu-icon::before,
+.menu-icon::after {
+  display: block;
+  background-color: white;
+  position: absolute;
+  height: 3px;
+  width: 100%;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.menu-icon {
+  top: 13px;
+}
+
+.menu-icon::before {
+  content: '';
+  top: -8px;
+}
+
+.menu-icon::after {
+  content: '';
+  top: 8px;
+}
+
+/* Contenedor del menú */
+.menu-container {
+  display: flex;
+}
+
+.menu-items {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-item {
+  margin: 0 10px;
+}
+
+.menu-item a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  display: block;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.menu-item a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu-item a.active {
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.menu-item a.active::after {
   content: '';
   position: absolute;
   bottom: -2px;
@@ -54,10 +124,59 @@
   background-color: #fff;
 }
 
-.navbar-brand img {
-  transition: transform 0.3s ease;
-}
-
-.navbar-brand:hover img {
-  transform: scale(1.1);
+/* Estilos responsive */
+@media (max-width: 991.98px) {
+  .menu-button {
+    display: flex; /* Mostrar el botón hamburguesa en pantallas pequeñas */
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .menu-container {
+    position: absolute;
+    top: 56px;
+    left: 0;
+    right: 0;
+    background-color: #343a40;
+    flex-direction: column;
+    padding: 1rem;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    
+    /* Escondemos el menú por defecto */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  
+  .menu-items {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .menu-item {
+    margin: 5px 0;
+    width: 100%;
+    text-align: center;
+  }
+  
+  /* Cuando el checkbox está marcado, mostramos el menú */
+  .menu-checkbox:checked ~ .menu-container {
+    max-height: 300px; /* Altura máxima del menú cuando está abierto */
+  }
+  
+  /* Animación del icono hamburguesa a X */
+  .menu-checkbox:checked ~ .menu-button .menu-icon {
+    background-color: transparent;
+  }
+  
+  .menu-checkbox:checked ~ .menu-button .menu-icon::before {
+    transform: rotate(45deg);
+    top: 0;
+  }
+  
+  .menu-checkbox:checked ~ .menu-button .menu-icon::after {
+    transform: rotate(-45deg);
+    top: 0;
+  }
 }
