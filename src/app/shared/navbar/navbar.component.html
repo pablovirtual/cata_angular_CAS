@@ -5,11 +5,11 @@
       <img src="assets/images/logo.jpg" alt="Logo" height="30" class="d-inline-block align-text-top me-2">
       Catálogo de Películas
     </a>
-    <button class="navbar-toggler" type="button" (click)="toggleMenu()">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleMenu()">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <!-- Usamos un enfoque más directo para alternar la visibilidad del menú -->
-    <div class="navbar-collapse" [class.menu-open]="isMenuOpen">
+    <!-- Añadimos ID y clases nativas de Bootstrap para mejor compatibilidad -->
+    <div class="collapse navbar-collapse" id="navbarContent" [class.menu-open]="isMenuOpen">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/movies']" routerLinkActive="active" (click)="closeMenu()">Ver Catálogo</a>
