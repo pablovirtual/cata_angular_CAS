@@ -4,14 +4,11 @@ FROM node:18 as build
 # Establecer directorio de trabajo
 WORKDIR /app
 
-# Copiar archivos de dependencias
-COPY package.json package-lock.json ./
-
-# Instalar dependencias
-RUN npm install
-
-# Copiar el resto del código fuente
+# Copiar todo el código fuente
 COPY . .
+
+# Instalar dependencias sin ejecutar scripts (evita el postinstall)
+RUN npm install --ignore-scripts
 
 # Compilar la aplicación
 RUN npm run build
