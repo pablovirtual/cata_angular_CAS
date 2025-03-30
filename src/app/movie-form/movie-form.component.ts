@@ -187,7 +187,9 @@ export class MovieFormComponent implements OnInit {
    * @param movieData Datos actualizados de la película
    */
   updateMovie(movieData: Movie): void {
-    this.movieService.updateMovie(this.movieId!, movieData).subscribe({
+    // Asignar el ID de la película al objeto movieData
+    movieData.id = this.movieId!;
+    this.movieService.updateMovie(movieData).subscribe({
       next: (response: any) => {
         console.log('Movie updated successfully:', response);
         this.submitting = false;

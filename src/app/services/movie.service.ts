@@ -63,7 +63,7 @@ export class MovieService {
       synopsis: 'Las vidas de varios criminales de Los Ángeles se entrelazan en esta historia no lineal.' 
     }
   ];
-
+  
   constructor(private http: HttpClient) { }
   
   /**
@@ -71,13 +71,13 @@ export class MovieService {
    * @returns Observable con array de películas
    */
   getMovies(): Observable<Movie[]> {
-    // Intentar obtener películas desde la API
+    // Obtener películas desde la API
     return this.http.get<Movie[]>(`${this.apiUrl}/movies`, this.httpOptions).pipe(
       tap(movies => console.log('Películas obtenidas desde API')),
       catchError(err => {
         console.error('Error al obtener películas desde API', err);
-        console.log('Usando datos de demostración como respaldo');
         // Usar datos de demostración como respaldo
+        console.log('Usando datos de demostración como respaldo');
         return of(this.demoMovies);
       })
     );
@@ -93,11 +93,11 @@ export class MovieService {
       tap(movie => console.log(`Película obtenida con ID ${id}`)),
       catchError(err => {
         console.error(`Error al obtener película con ID ${id}`, err);
-        // Buscar en los datos de demostración como respaldo
-        const movie = this.demoMovies.find(m => m.id === id);
-        if (movie) {
+        // Buscar película en datos de demostración
+        const demoMovie = this.demoMovies.find(m => m.id === id);
+        if (demoMovie) {
           console.log('Usando datos de demostración como respaldo');
-          return of(movie);
+          return of(demoMovie);
         }
         return throwError(() => new Error(`No se encontró la película con ID ${id}`));
       })
