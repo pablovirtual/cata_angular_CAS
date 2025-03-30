@@ -1,0 +1,2 @@
+Este archivo se crea únicamente para forzar una reconstrucción completa en Railway.
+Timestamp: 2025-03-30T15:16:40
