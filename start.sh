@@ -10,6 +10,7 @@ fi
 echo "=============================================================="
 echo "INICIANDO APLICACIÓN CATÁLOGO PELÍCULAS"
 echo "Puerto asignado por Railway: $PORT"
+echo "Fecha y hora de despliegue: $(date)"
 echo "=============================================================="
 
 # Crear una configuración de nginx específica para Railway
@@ -25,12 +26,22 @@ server {
     # Configuración para Angular SPA
     location / {
         try_files \$uri \$uri/ /index.html;
+        
+        # Deshabilitar el caché para HTML y otros archivos
+        add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
+        expires off;
     }
     
-    # Configuración de caché para archivos estáticos
-    location ~* \.(jpg|jpeg|png|gif|ico|css|js)\$ {
+    # Configuración de caché para archivos estáticos con versión hash
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)(\?v=[0-9.]+)$ {
         expires 1y;
         add_header Cache-Control "public, max-age=31536000";
+    }
+    
+    # Archivos estáticos sin versión hash - no cachear
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
+        expires -1;
+        add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
     }
     
     # Configuración de seguridad
