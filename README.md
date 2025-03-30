@@ -219,6 +219,78 @@ Para actualizar la aplicación desplegada:
 4. Sube los cambios: `git push`
 5. Railway detectará automáticamente los cambios y desplegará la nueva versión
 
+## API Backend en Railway
+
+La aplicación Angular se comunica con una API backend desarrollada en Laravel y desplegada en Railway. Esta API gestiona el acceso a la base de datos MySQL y proporciona los endpoints necesarios para realizar operaciones CRUD sobre las películas.
+
+### Información de Despliegue
+
+- **URL de la API**: `https://cataangularcas-production.up.railway.app/api`
+- **Repositorio**: `catalago_laravel` (GitHub integrado con Railway)
+- **Base de Datos**: MySQL (Desplegada en Railway)
+  - Conexión: `mysql://root:Ufax1824@yamanote.proxy.rlwy.net:47960/catalogo`
+  - **Nota**: Esta conexión solo debe ser utilizada por el backend Laravel, nunca directamente desde Angular.
+
+### Endpoints Disponibles
+
+La API expone los siguientes endpoints RESTful:
+
+#### Películas
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | `/api/movies` | Obtener todas las películas |
+| GET | `/api/movies/{id}` | Obtener una película específica por su ID |
+| POST | `/api/movies` | Crear una nueva película |
+| PUT | `/api/movies/{id}` | Actualizar una película existente |
+| DELETE | `/api/movies/{id}` | Eliminar una película |
+
+### Formato de Datos
+
+#### Película (Movie)
+
+```json
+{
+  "id": 1,
+  "title": "El Padrino",
+  "director": "Francis Ford Coppola",
+  "year": 1972,
+  "cover": "https://example.com/cover.jpg",
+  "poster": "https://example.com/poster.jpg",
+  "genre": "Drama",
+  "synopsis": "La historia de la familia mafiosa Corleone..."
+}
+```
+
+### Integración en Angular
+
+El servicio `MovieService` en Angular está configurado para comunicarse con la API Laravel. Incluye manejo de errores y utiliza datos de demostración como respaldo en caso de que la API no esté disponible.
+
+```typescript
+// Ejemplo de configuración en movie.service.ts
+private apiUrl = 'https://cataangularcas-production.up.railway.app/api';
+
+private httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  })
+};
+```
+
+### Consideraciones de Seguridad
+
+- Las credenciales de base de datos nunca deben estar en el código del frontend.
+- La comunicación debe seguir el flujo: Angular → API Laravel → MySQL.
+- Para operaciones de escritura (POST, PUT, DELETE), se recomienda implementar autenticación en la API.
+
+### Mantenimiento y Monitoreo
+
+Para verificar el estado de la API:
+1. Accede al dashboard de Railway: [railway.app](https://railway.app/)
+2. Selecciona el proyecto "cata_angular_CAS"
+3. Revisa los logs y métricas del servicio "catalago_laravel"
+
 ## Información del Desarrollador
 
 - **Nombre:** Pedro Pablo Rodriguez Gomez
