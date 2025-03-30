@@ -20,7 +20,7 @@ export class MovieService {
   /** 
    * URL base de la API Laravel desplegada en Railway
    */
-  private apiUrl = 'https://catalagolaravel-production.up.railway.app/api';
+  private apiUrl = 'https://catalagolaravel-production.up.railway.app/api/movies';
   
   // Configuración para las peticiones HTTP
   private httpOptions = {
