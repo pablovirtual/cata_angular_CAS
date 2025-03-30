@@ -12,77 +12,149 @@
   <style>
     /* Estos estilos se aplican directamente, sin depender de la compilación de Angular */
     @media (max-width: 991.98px) {
-      #directNavbarToggle {
-        display: block;
+      #productionNavMenu {
         position: fixed;
-        top: 10px;
-        right: 15px;
-        z-index: 2000;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 9999;
+        background-color: #343a40;
+        padding: 10px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      }
+      
+      #productionNavMenu .brand {
+        color: white;
+        text-decoration: none;
+        font-size: 1.25rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+      }
+      
+      #productionNavMenu .brand img {
+        height: 30px;
+        margin-right: 10px;
+      }
+      
+      #menuToggle {
         width: 40px;
         height: 40px;
+        position: relative;
+        background: transparent;
         border: none;
-        background-color: #343a40;
-        border-radius: 4px;
         cursor: pointer;
-        padding: 5px;
       }
       
-      #directNavbarToggle span {
+      #menuToggle span {
         display: block;
-        width: 100%;
+        position: absolute;
         height: 3px;
-        background-color: white;
-        margin: 5px 0;
-        transition: 0.3s;
+        width: 100%;
+        background: white;
+        border-radius: 3px;
+        opacity: 1;
+        left: 0;
+        transform: rotate(0deg);
+        transition: .25s ease-in-out;
       }
       
-      #directMobileMenu {
-        display: none;
+      #menuToggle span:nth-child(1) {
+        top: 10px;
+      }
+      
+      #menuToggle span:nth-child(2) {
+        top: 20px;
+      }
+      
+      #menuToggle span:nth-child(3) {
+        top: 30px;
+      }
+      
+      #menuToggle.open span:nth-child(1) {
+        top: 20px;
+        transform: rotate(135deg);
+      }
+      
+      #menuToggle.open span:nth-child(2) {
+        opacity: 0;
+        left: -60px;
+      }
+      
+      #menuToggle.open span:nth-child(3) {
+        top: 20px;
+        transform: rotate(-135deg);
+      }
+      
+      #mobileLinks {
         position: fixed;
         top: 60px;
         left: 0;
         right: 0;
         background-color: #343a40;
         padding: 20px;
-        z-index: 1999;
+        display: none;
+        z-index: 9998;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
       }
       
-      #directMobileMenu.menu-open {
+      #mobileLinks.show {
         display: block;
       }
       
-      #directMobileMenu a {
+      #mobileLinks a {
         display: block;
         color: white;
         text-decoration: none;
-        padding: 10px 15px;
-        margin: 5px 0;
+        padding: 12px 20px;
+        margin: 10px 0;
         text-align: center;
+        font-size: 16px;
+        background-color: rgba(255,255,255,0.05);
         border-radius: 4px;
+        transition: all 0.3s ease;
       }
       
-      #directMobileMenu a:hover {
+      #mobileLinks a:hover {
         background-color: rgba(255,255,255,0.1);
+      }
+      
+      /* Ajuste para el contenedor principal de Angular */
+      app-root {
+        padding-top: 60px;
+        display: block;
       }
     }
     
     @media (min-width: 992px) {
-      #directNavbarToggle, #directMobileMenu {
+      #productionNavMenu, #mobileLinks {
         display: none !important;
+      }
+      
+      app-root {
+        padding-top: 0;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Menú móvil directo (fuera de Angular) que funcionará en producción -->
-  <button id="directNavbarToggle" aria-label="Toggle navigation">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
+  <!-- Navegación completa independiente de Angular para producción -->
+  <nav id="productionNavMenu">
+    <a href="/" class="brand">
+      <img src="assets/images/logo.jpg" alt="Logo"> 
+      Catálogo de Películas
+    </a>
+    <button id="menuToggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
   
-  <div id="directMobileMenu">
+  <div id="mobileLinks">
     <a href="/movies">Ver Catálogo</a>
     <a href="/movies/new">Agregar Película</a>
   </div>
@@ -90,39 +162,17 @@
   <app-root></app-root>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   
-  <!-- Script para controlar el menú móvil directo -->
+  <!-- Script para el menú de producción -->
   <script>
+    // Ejecutar tan pronto como el DOM esté listo
     document.addEventListener('DOMContentLoaded', function() {
-      var menuButton = document.getElementById('directNavbarToggle');
-      var mobileMenu = document.getElementById('directMobileMenu');
+      var menuToggle = document.getElementById('menuToggle');
+      var mobileLinks = document.getElementById('mobileLinks');
       
-      if (menuButton && mobileMenu) {
-        menuButton.addEventListener('click', function() {
-          mobileMenu.classList.toggle('menu-open');
-          
-          // Animar las barras del botón hamburguesa a X
-          var bars = menuButton.querySelectorAll('span');
-          if (mobileMenu.classList.contains('menu-open')) {
-            bars[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-            bars[1].style.opacity = '0';
-            bars[2].style.transform = 'rotate(-45deg) translate(7px, -7px)';
-          } else {
-            bars[0].style.transform = 'none';
-            bars[1].style.opacity = '1';
-            bars[2].style.transform = 'none';
-          }
-        });
-        
-        // Cerrar el menú al hacer clic en un enlace
-        var links = mobileMenu.querySelectorAll('a');
-        links.forEach(function(link) {
-          link.addEventListener('click', function() {
-            mobileMenu.classList.remove('menu-open');
-            menuButton.querySelectorAll('span').forEach(function(bar) {
-              bar.style.transform = 'none';
-              bar.style.opacity = '1';
-            });
-          });
+      if (menuToggle && mobileLinks) {
+        menuToggle.addEventListener('click', function() {
+          menuToggle.classList.toggle('open');
+          mobileLinks.classList.toggle('show');
         });
       }
     });
