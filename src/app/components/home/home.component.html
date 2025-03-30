@@ -157,6 +157,29 @@
     </div>
   </div>
 
+  <!-- Sección de enlaces a plataformas de streaming -->
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-12 text-center mb-4">
+        <h2 class="display-6">Plataformas de Streaming Recomendadas</h2>
+        <p class="lead">Explora estas plataformas para ver películas en línea</p>
+      </div>
+      <div class="col-md-8 col-lg-6 text-center">
+        <div class="d-flex justify-content-center flex-wrap gap-3">
+          <a href="https://www.netflix.com" target="_blank" class="btn btn-danger btn-lg" style="background-color: #E50914; border-color: #E50914;">
+            <i class="bi bi-play-fill me-2"></i> Netflix
+          </a>
+          <a [routerLink]="['/movies']" class="btn btn-primary btn-lg">
+            <i class="bi bi-collection-play me-2"></i> Nuestro Catálogo
+          </a>
+        </div>
+        <p class="text-muted mt-3">
+          <small>*Los enlaces externos se abren en una nueva ventana. No estamos afiliados con Netflix.</small>
+        </p>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer con la información del estudiante -->
   <footer class="bg-dark text-white py-4 mt-5">
     <div class="container">
