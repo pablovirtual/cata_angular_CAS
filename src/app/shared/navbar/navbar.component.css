@@ -12,9 +12,17 @@
 /* Estilos para manejo manual de menú responsive */
 @media (max-width: 991.98px) {
   .navbar-collapse {
+    position: absolute;
+    top: 56px; /* Ajusta según la altura de tu navbar */
+    left: 0;
+    right: 0;
+    background-color: #343a40; /* Mismo color que navbar-dark bg-dark */
+    padding: 1rem;
+    z-index: 1000;
     display: none;
     overflow-y: auto;
     max-height: 80vh;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   }
   
   .navbar-collapse.menu-open {

@@ -8,8 +8,8 @@
     <button class="navbar-toggler" type="button" (click)="toggleMenu()">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <!-- Nota: cambiamos las clases para usar nuestro propio sistema -->
-    <div class="navbar-collapse" [ngClass]="{'menu-open': isMenuOpen}">
+    <!-- Usamos un enfoque más directo para alternar la visibilidad del menú -->
+    <div class="navbar-collapse" [class.menu-open]="isMenuOpen">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/movies']" routerLinkActive="active" (click)="closeMenu()">Ver Catálogo</a>
