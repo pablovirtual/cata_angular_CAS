@@ -8,3 +8,29 @@
   top: 0;
   left: 0;
 }
+
+/* Estilo para el botón de catálogo que solo se muestra en tamaño específico */
+.catalogo-button-section {
+  display: none; /* Por defecto está oculto */
+}
+
+/* Solo mostrar en el tamaño específico 683x621 con un pequeño margen para capturar ese tamaño */
+@media (min-width: 680px) and (max-width: 686px) and (min-height: 618px) and (max-height: 624px) {
+  .catalogo-button-section {
+    display: block;
+    text-align: center;
+    margin: 30px auto;
+  }
+  
+  .catalogo-button {
+    font-size: 1.25rem;
+    padding: 12px 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .catalogo-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+}
