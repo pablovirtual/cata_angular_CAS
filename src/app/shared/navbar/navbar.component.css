@@ -19,17 +19,23 @@
     background-color: #343a40; /* Mismo color que navbar-dark bg-dark */
     padding: 1rem;
     z-index: 1000;
-    display: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     overflow-y: auto;
     max-height: 80vh;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   }
   
-  .navbar-collapse.menu-open {
+  /* Por defecto el menú está oculto */
+  .collapse:not(.show) {
+    display: none;
+  }
+  
+  /* Cuando tiene la clase show, se muestra */
+  .collapse.show {
     display: block;
   }
 }
 
+/* Estilo para enlaces activos */
 .nav-link.active {
   font-weight: bold;
   position: relative;

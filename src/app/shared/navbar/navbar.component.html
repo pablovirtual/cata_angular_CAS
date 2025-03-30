@@ -5,17 +5,19 @@
       <img src="assets/images/logo.jpg" alt="Logo" height="30" class="d-inline-block align-text-top me-2">
       Catálogo de Películas
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleMenu()">
+    <!-- Botón de menú simple con ID específico -->
+    <button id="mobileMenuButton" class="navbar-toggler" type="button" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <!-- Añadimos ID y clases nativas de Bootstrap para mejor compatibilidad -->
-    <div class="collapse navbar-collapse" id="navbarContent" [class.menu-open]="isMenuOpen">
+    
+    <!-- Menú con ID específico -->
+    <div id="mobileNavMenu" class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/movies']" routerLinkActive="active" (click)="closeMenu()">Ver Catálogo</a>
+          <a class="nav-link" [routerLink]="['/movies']" routerLinkActive="active">Ver Catálogo</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/movies/new']" routerLinkActive="active" (click)="closeMenu()">Agregar Película</a>
+          <a class="nav-link" [routerLink]="['/movies/new']" routerLinkActive="active">Agregar Película</a>
         </li>
       </ul>
     </div>

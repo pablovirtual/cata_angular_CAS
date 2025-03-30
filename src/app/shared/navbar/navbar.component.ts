@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -18,41 +18,35 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
-  // Variable para controlar si el menú está abierto o cerrado
-  isMenuOpen = false;
+export class NavbarComponent implements OnInit {
   
   /**
-   * Activa o desactiva la visibilidad del menú
+   * Inicializa el manejador del menú móvil después de que el componente se carga
    */
-  toggleMenu(): void {
-    this.isMenuOpen = !this.isMenuOpen;
-    // Aplicación directa de clase para mayor compatibilidad con producción
-    this.applyMenuState();
-  }
-  
-  /**
-   * Cierra el menú si está abierto
-   */
-  closeMenu(): void {
-    this.isMenuOpen = false;
-    // Aplicación directa de clase para mayor compatibilidad con producción
-    this.applyMenuState();
-  }
-
-  /**
-   * Aplica el estado del menú directamente al DOM para mayor compatibilidad
-   * con entornos de producción
-   */
-  private applyMenuState(): void {
-    // Manipulación directa del DOM para garantizar compatibilidad en producción
-    const navbarCollapse = document.querySelector('.navbar-collapse');
-    if (navbarCollapse) {
-      if (this.isMenuOpen) {
-        navbarCollapse.classList.add('menu-open');
-      } else {
-        navbarCollapse.classList.remove('menu-open');
+  ngOnInit(): void {
+    // Implementación directa con JavaScript vanilla para garantizar la compatibilidad en producción
+    setTimeout(() => {
+      const menuButton = document.getElementById('mobileMenuButton');
+      const mobileMenu = document.getElementById('mobileNavMenu');
+      
+      if (menuButton && mobileMenu) {
+        // Evento de clic para el botón que funciona en cualquier entorno
+        menuButton.addEventListener('click', () => {
+          if (mobileMenu.classList.contains('show')) {
+            mobileMenu.classList.remove('show');
+          } else {
+            mobileMenu.classList.add('show');
+          }
+        });
+        
+        // Cierra el menú cuando se hace clic en un enlace
+        const navLinks = mobileMenu.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            mobileMenu.classList.remove('show');
+          });
+        });
       }
-    }
+    }, 500); // Pequeño retraso para asegurar que los elementos DOM están disponibles
   }
 }
