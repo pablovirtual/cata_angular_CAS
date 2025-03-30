@@ -18,12 +18,19 @@ import { Movie } from '../models/movie';
 })
 export class MovieService {
   /** 
-   * URL base de la API 
-   * NOTA: Por ahora, utilizamos datos mockeados para la demostración
+   * URL base de la API Laravel desplegada en Railway
    */
-  private apiUrl = 'http://api-placeholder/api';
+  private apiUrl = 'https://cataangularcas-production.up.railway.app/api';
   
-  // Datos de demostración para despliegue estático
+  // Configuración para las peticiones HTTP
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    })
+  };
+  
+  // Datos de demostración como respaldo en caso de que la API no esté disponible
   private demoMovies: Movie[] = [
     { 
       id: 1, 
@@ -37,111 +44,113 @@ export class MovieService {
     },
     { 
       id: 2, 
-      title: 'Pulp Fiction', 
-      director: 'Quentin Tarantino',
-      year: 1994, 
-      cover: 'https://image.tmdb.org/t/p/w500/suaEOtk1N1sgg2QM528BOlti6xW.jpg', 
-      poster: 'https://image.tmdb.org/t/p/w500/suaEOtk1N1sgg2QM528BOlti6xW.jpg',
-      genre: 'Crimen',
-      synopsis: 'Las vidas de dos mafiosos, un boxeador, la esposa de un gángster y un par de bandidos se entrelazan en una historia dirigida por Quentin Tarantino.' 
+      title: 'El Caballero de la Noche', 
+      director: 'Christopher Nolan',
+      year: 2008, 
+      cover: 'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg', 
+      poster: 'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg',
+      genre: 'Acción',
+      synopsis: 'Batman se enfrenta al Joker, un criminal que busca sumir a Ciudad Gótica en el caos.' 
     },
     { 
       id: 3, 
-      title: 'Interestelar', 
-      director: 'Christopher Nolan',
-      year: 2014, 
-      cover: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg', 
-      poster: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
-      genre: 'Ciencia ficción',
-      synopsis: 'Un grupo de exploradores viaja a través de un agujero de gusano en busca de un nuevo hogar para la humanidad. Dirigida por Christopher Nolan.' 
+      title: 'Pulp Fiction', 
+      director: 'Quentin Tarantino',
+      year: 1994, 
+      cover: 'https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg', 
+      poster: 'https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg',
+      genre: 'Crimen',
+      synopsis: 'Las vidas de varios criminales de Los Ángeles se entrelazan en esta historia no lineal.' 
     }
   ];
-  
-  /** Opciones HTTP predeterminadas */
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  };
 
-  /**
-   * Constructor del servicio
-   * @param http Cliente HTTP para realizar peticiones a la API
-   */
   constructor(private http: HttpClient) { }
-
+  
   /**
-   * Obtiene todas las películas (versión demo estática)
-   * @returns Observable con un array de objetos Movie
+   * Obtiene todas las películas desde la API
+   * @returns Observable con array de películas
    */
   getMovies(): Observable<Movie[]> {
-    console.log('Usando datos de demostración estáticos (sin backend)');
-    return of(this.demoMovies);
+    // Intentar obtener películas desde la API
+    return this.http.get<Movie[]>(`${this.apiUrl}/movies`, this.httpOptions).pipe(
+      tap(movies => console.log('Películas obtenidas desde API')),
+      catchError(err => {
+        console.error('Error al obtener películas desde API', err);
+        console.log('Usando datos de demostración como respaldo');
+        // Usar datos de demostración como respaldo
+        return of(this.demoMovies);
+      })
+    );
   }
-
+  
   /**
-   * Obtiene una película específica por su ID (versión demo estática)
-   * @param id ID de la película a obtener
-   * @returns Observable con el objeto Movie correspondiente al ID
+   * Obtiene una película por su ID
+   * @param id ID de la película
+   * @returns Observable con la película
    */
   getMovie(id: number): Observable<Movie> {
-    console.log('Obteniendo película con ID:', id, '(datos de demostración)');
-    const movie = this.demoMovies.find(m => m.id === id);
-    
-    if (movie) {
-      return of(movie);
-    } else {
-      return throwError(() => new Error('Película no encontrada'));
-    }
+    return this.http.get<Movie>(`${this.apiUrl}/movies/${id}`, this.httpOptions).pipe(
+      tap(movie => console.log(`Película obtenida con ID ${id}`)),
+      catchError(err => {
+        console.error(`Error al obtener película con ID ${id}`, err);
+        // Buscar en los datos de demostración como respaldo
+        const movie = this.demoMovies.find(m => m.id === id);
+        if (movie) {
+          console.log('Usando datos de demostración como respaldo');
+          return of(movie);
+        }
+        return throwError(() => new Error(`No se encontró la película con ID ${id}`));
+      })
+    );
   }
-
+  
   /**
-   * Crea una nueva película (versión demo estática)
-   * @param movie Objeto Movie con los datos de la nueva película
-   * @returns Observable con la respuesta simulada
+   * Crea una nueva película
+   * @param movie Datos de la película
+   * @returns Observable con la película creada
    */
-  createMovie(movie: Movie): Observable<any> {
-    console.log('Creando película de demostración (sin backend):', movie);
-    return of({ success: true, message: 'Película creada con éxito (simulado)' });
+  createMovie(movie: Movie): Observable<Movie> {
+    return this.http.post<Movie>(`${this.apiUrl}/movies`, movie, this.httpOptions).pipe(
+      tap(newMovie => console.log(`Película creada con ID ${newMovie.id}`)),
+      catchError(this.handleError<Movie>('createMovie'))
+    );
   }
-
+  
   /**
-   * Actualiza una película existente (versión demo estática)
-   * @param id ID de la película a actualizar
-   * @param movie Objeto Movie con los nuevos datos
-   * @returns Observable con la respuesta simulada
+   * Actualiza una película existente
+   * @param movie Datos actualizados de la película
+   * @returns Observable con la película actualizada
    */
-  updateMovie(id: number, movie: Movie): Observable<any> {
-    console.log('Actualizando película de demostración (sin backend):', movie);
-    return of({ success: true, message: 'Película actualizada con éxito (simulado)' });
+  updateMovie(movie: Movie): Observable<Movie> {
+    return this.http.put<Movie>(`${this.apiUrl}/movies/${movie.id}`, movie, this.httpOptions).pipe(
+      tap(_ => console.log(`Película actualizada con ID ${movie.id}`)),
+      catchError(this.handleError<Movie>('updateMovie'))
+    );
   }
-
+  
   /**
-   * Elimina una película existente (versión demo estática)
+   * Elimina una película
    * @param id ID de la película a eliminar
-   * @returns Observable con la respuesta simulada
+   * @returns Observable vacío
    */
   deleteMovie(id: number): Observable<any> {
-    console.log('Eliminando película de demostración (sin backend) ID:', id);
-    return of({ success: true, message: 'Película eliminada con éxito (simulado)' });
+    return this.http.delete(`${this.apiUrl}/movies/${id}`, this.httpOptions).pipe(
+      tap(_ => console.log(`Película eliminada con ID ${id}`)),
+      catchError(this.handleError<any>('deleteMovie'))
+    );
   }
-
+  
   /**
-   * Maneja errores en las peticiones HTTP
-   * @param error Objeto de error HTTP
-   * @returns Observable que emite un Error
-   * @private
+   * Maneja errores HTTP
+   * @param operation Nombre de la operación que falló
+   * @param result Valor opcional para devolver como observable
    */
-  private handleError(error: any) {
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      // Error del lado del cliente
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // Error del servidor
-      errorMessage = `Código: ${error.status}\nMensaje: ${error.message}`;
-    }
-    console.error('API Error:', errorMessage, error);
-    return throwError(() => new Error(errorMessage));
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(`${operation} falló: ${error.message}`);
+      
+      // Permite a la aplicación seguir funcionando devolviendo un resultado vacío
+      return of(result as T);
+    };
   }
 }
